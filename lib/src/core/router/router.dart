@@ -1,4 +1,5 @@
 
+import 'package:emergen_sync/src/features/emergency_contacts/screens/emergency_contacts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,12 @@ final GoRouter router = GoRouter(
           path: 'home',
           builder: (BuildContext context, GoRouterState state) {
             return const HomeScreen();
+          },
+        ),
+        GoRoute(
+          path: 'emergency_contacts',
+          builder: (BuildContext context, GoRouterState state) {
+            return const EmergencyContactsScreen();
           },
         ),
       ],

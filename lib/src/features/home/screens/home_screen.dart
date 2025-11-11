@@ -1,4 +1,8 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emergen_sync/src/features/alerts/models/alert_model.dart';
+import 'package:emergen_sync/src/features/alerts/services/alert_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late ShakeDetector detector;
   Location location = Location();
+  final AlertService _alertService = AlertService();
 
   @override
   void initState() {
@@ -38,7 +43,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void _sendLocationSms() async {
     try {
       final locData = await location.getLocation();
-      final String sms = 'sms:?body=I need help! My location is: https://www.google.com/maps/search/?api=1&query=${locData.latitude},${locData.longitude}';
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        final newAlert = Alert(
+          id: '', // Firestore generates the ID
+          userId: user.uid,
+          timestamp: Timestamp.now(),
+          location: GeoPoint(locData.latitude!, locData.longitude!),
+        );
+        await _alertService.logAlert(newAlert);
+      }
+
+      final String sms =
+          'sms:?body=I need help! My location is: https://www.google.com/maps/search/?api=1&query=${locData.latitude},${locData.longitude}';
       final Uri uri = Uri.parse(sms);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
@@ -64,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('EmergenSync'),
         actions: [
           IconButton(
-            icon: Icon(themeProvider.themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode),
+            icon: Icon(themeProvider.themeMode == ThemeMode.dark
+                ? Icons.light_mode
+                : Icons.dark_mode),
             onPressed: () => themeProvider.toggleTheme(),
             tooltip: 'Toggle Theme',
           ),
@@ -94,8 +114,23 @@ class _HomeScreenState extends State<HomeScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: _sendLocationSms,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              child: const Text('PANIC BUTTON'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => context.go('/emergency_contacts'),
+              child: const Text('Emergency Contacts'),
+            ),
+            const SizedBox(height: 20),
             const Text(
-              'Shake your phone to send an emergency SMS with your location.',
+              'Or shake your phone to send an emergency SMS with your location.',
               textAlign: TextAlign.center,
             ),
           ],
