@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -37,12 +36,14 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
-  
+
   // Send Sign In Link to Email
   Future<void> sendSignInLinkToEmail(String email) async {
     try {
+      // IMPORTANT: Replace YOUR_PROJECT_ID with your actual Firebase project ID.
+      const projectId = 'emergensync';
       final actionCodeSettings = ActionCodeSettings(
-        url: 'https://emergensync.page.link/signIn',
+        url: 'https://\${projectId}.firebaseapp.com/__/auth/action?mode=signIn&oobCode=<oobCode>',
         handleCodeInApp: true,
         androidPackageName: 'com.example.emergen_sync',
         androidInstallApp: true,
