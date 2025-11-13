@@ -11,15 +11,15 @@ class AppTheme {
         brightness: Brightness.light,
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.inter(
+        displayLarge: GoogleFonts.roboto(
           fontSize: 57,
           fontWeight: FontWeight.bold,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: GoogleFonts.roboto(
           fontSize: 22,
           fontWeight: FontWeight.w500,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: GoogleFonts.roboto(
           fontSize: 14,
         ),
       ),
@@ -34,15 +34,15 @@ class AppTheme {
         brightness: Brightness.dark,
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.inter(
+        displayLarge: GoogleFonts.roboto(
           fontSize: 57,
           fontWeight: FontWeight.bold,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: GoogleFonts.roboto(
           fontSize: 22,
           fontWeight: FontWeight.w500,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: GoogleFonts.roboto(
           fontSize: 14,
         ),
       ),

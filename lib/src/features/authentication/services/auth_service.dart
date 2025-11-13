@@ -1,9 +1,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // Email & Password Sign Up
   Future<User?> signUp(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -12,11 +14,12 @@ class AuthService {
       );
       return result.user;
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       return null;
     }
   }
 
+  // Email & Password Sign In
   Future<User?> signIn(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -25,15 +28,36 @@ class AuthService {
       );
       return result.user;
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       return null;
     }
   }
 
+  // Sign Out
   Future<void> signOut() async {
     await _auth.signOut();
   }
+  
+  // Send Sign In Link to Email
+  Future<void> sendSignInLinkToEmail(String email) async {
+    try {
+      final actionCodeSettings = ActionCodeSettings(
+        url: 'https://emergensync.page.link/signIn',
+        handleCodeInApp: true,
+        androidPackageName: 'com.example.emergen_sync',
+        androidInstallApp: true,
+        androidMinimumVersion: '12',
+      );
+      await _auth.sendSignInLinkToEmail(
+        email: email,
+        actionCodeSettings: actionCodeSettings,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
+  // Auth State Changes
   Stream<User?> get user {
     return _auth.authStateChanges();
   }

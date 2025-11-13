@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergen_sync/src/features/alerts/models/alert_model.dart';
-import 'package:emergen_sync/src/features/alerts/services/alert_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
@@ -10,14 +9,12 @@ class AdminDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AlertService alertService = AlertService();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin Dashboard'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('alerts').snapshots(),
+        stream: FirebaseFirestore.instance.collection('alerts').orderBy('timestamp', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -29,15 +26,7 @@ class AdminDashboardScreen extends StatelessWidget {
             return const Center(child: Text('No alerts found.'));
           }
 
-          final alerts = snapshot.data!.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return Alert(
-              id: doc.id,
-              userId: data['userId'],
-              timestamp: data['timestamp'],
-              location: data['location'],
-            );
-          }).toList();
+          final alerts = snapshot.data!.docs.map((doc) => Alert.fromFirestore(doc)).toList();
 
           return ListView.builder(
             itemCount: alerts.length,

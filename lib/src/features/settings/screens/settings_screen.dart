@@ -1,10 +1,17 @@
+import 'package:emergen_sync/src/features/authentication/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:emergen_sync/src/shared/providers/theme_provider.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -48,6 +55,18 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
             ),
+            const Spacer(),
+            Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  final router = GoRouter.of(context);
+                  await AuthService().signOut();
+                  router.go('/');
+                },
+                child: const Text('Log Out'),
+              ),
+            ),
+            const SizedBox(height: 32),
           ],
         ),
       ),

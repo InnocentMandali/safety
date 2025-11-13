@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shake/shake.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:emergen_sync/src/features/authentication/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -75,8 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('EmergenSync'),
@@ -85,14 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.settings),
             onPressed: () => context.go('/settings'),
             tooltip: 'Settings',
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await authService.signOut();
-              context.go('/login');
-            },
-            tooltip: 'Logout',
           ),
         ],
       ),
@@ -128,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   foregroundColor: Colors.white,
                   shape: const CircleBorder(),
                   elevation: 10,
-                  shadowColor: Colors.red.withOpacity(0.8),
+                  shadowColor: Colors.red.withAlpha(204),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
