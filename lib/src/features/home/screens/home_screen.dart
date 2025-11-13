@@ -1,16 +1,13 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergen_sync/src/features/alerts/models/alert_model.dart';
 import 'package:emergen_sync/src/features/alerts/services/alert_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:shake/shake.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:emergen_sync/src/features/authentication/services/auth_service.dart';
-import 'package:emergen_sync/src/shared/providers/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -61,20 +58,23 @@ class _HomeScreenState extends State<HomeScreen> {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch SMS app.')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Could not launch SMS app.')),
+          );
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error sending SMS: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error sending SMS: $e')),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     final authService = AuthService();
 
     return Scaffold(
@@ -82,11 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('EmergenSync'),
         actions: [
           IconButton(
-            icon: Icon(themeProvider.themeMode == ThemeMode.dark
-                ? Icons.light_mode
-                : Icons.dark_mode),
-            onPressed: () => themeProvider.toggleTheme(),
-            tooltip: 'Toggle Theme',
+            icon: const Icon(Icons.settings),
+            onPressed: () => context.go('/settings'),
+            tooltip: 'Settings',
           ),
           IconButton(
             icon: const Icon(Icons.logout),
@@ -98,41 +96,82 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Text(
-              'Welcome to EmergenSync',
-              style: Theme.of(context).textTheme.displayLarge,
-              textAlign: TextAlign.center,
+            Column(
+              children: [
+                Text(
+                  'Welcome to EmergenSync',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Your personal safety companion',
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            Text(
-              'Your personal safety companion',
-              style: Theme.of(context).textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: _sendLocationSms,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+
+            // Panic Button
+            SizedBox(
+              width: 200,
+              height: 200,
+              child: ElevatedButton(
+                onPressed: _sendLocationSms,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red[700],
+                  foregroundColor: Colors.white,
+                  shape: const CircleBorder(),
+                  elevation: 10,
+                  shadowColor: Colors.red.withOpacity(0.8),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.warning_amber_rounded, size: 60),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'PANIC',
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-              child: const Text('PANIC BUTTON'),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => context.go('/emergency_contacts'),
-              child: const Text('Emergency Contacts'),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Or shake your phone to send an emergency SMS with your location.',
+            
+            Text(
+              'Press the button or shake your phone to send an emergency SMS with your location.',
               textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
+            
+            // Other options
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.people_alt_outlined),
+                  onPressed: () => context.go('/emergency_contacts'),
+                  label: const Text('Contacts'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                ),
+                 ElevatedButton.icon(
+                  icon: const Icon(Icons.admin_panel_settings_outlined),
+                  onPressed: () => context.go('/admin'),
+                  label: const Text('Admin'),
+                   style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

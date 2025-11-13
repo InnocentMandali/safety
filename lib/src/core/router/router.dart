@@ -8,6 +8,7 @@ import 'package:emergen_sync/src/features/authentication/screens/login_screen.da
 import 'package:emergen_sync/src/features/authentication/screens/signup_screen.dart';
 import 'package:emergen_sync/src/features/dashboard/screens/admin_dashboard_screen.dart';
 import 'package:emergen_sync/src/features/home/screens/home_screen.dart';
+import 'package:emergen_sync/src/features/settings/screens/settings_screen.dart';
 import 'package:emergen_sync/main.dart';
 
 
@@ -47,6 +48,12 @@ final GoRouter router = GoRouter(
           path: 'emergency_contacts',
           builder: (BuildContext context, GoRouterState state) {
             return const EmergencyContactsScreen();
+          },
+        ),
+        GoRoute(
+          path: 'settings',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SettingsScreen();
           },
         ),
       ],
