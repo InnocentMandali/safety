@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:emergen_sync/src/features/emergency_contacts/models/emergency_contact_model.dart';
 import 'package:emergen_sync/src/features/emergency_contacts/services/emergency_contact_service.dart';
 
@@ -51,54 +52,24 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddContactDialog(context),
+        onPressed: _pickContact,
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showAddContactDialog(BuildContext context) {
-    final nameController = TextEditingController();
-    final phoneController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Add Emergency Contact'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: phoneController,
-                decoration: const InputDecoration(labelText: 'Phone'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                final newContact = EmergencyContact(
-                  id: '', // Firestore generates the ID
-                  name: nameController.text,
-                  phone: phoneController.text,
-                );
-                _contactService.addContact(newContact);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Add'),
-            ),
-          ],
+  void _pickContact() async {
+    if (await FlutterContacts.requestPermission()) {
+      final contact = await FlutterContacts.openExternalPick();
+      if (contact != null) {
+        final newContact = EmergencyContact(
+          id: '', // Firestore generates the ID
+          name: contact.displayName,
+          phone: contact.phones.isNotEmpty ? contact.phones.first.number : '',
         );
-      },
-    );
+        _contactService.addContact(newContact);
+      }
+    }
   }
+
 }

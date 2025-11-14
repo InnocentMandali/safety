@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergen_sync/src/features/alerts/models/alert_model.dart';
 import 'package:emergen_sync/src/features/alerts/services/alert_service.dart';
+import 'package:emergen_sync/src/features/emergency_contacts/services/emergency_contact_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shake/shake.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,15 +21,21 @@ class _HomeScreenState extends State<HomeScreen> {
   late ShakeDetector detector;
   Location location = Location();
   final AlertService _alertService = AlertService();
+  final EmergencyContactService _contactService = EmergencyContactService();
 
   @override
   void initState() {
     super.initState();
+    _requestPermissions();
     detector = ShakeDetector.autoStart(
-      onPhoneShake: (ShakeEvent event) {
-        _sendLocationSms();
+      onPhoneShake: (shakeEvent) {
+        _sendAlert();
       },
     );
+  }
+
+  void _requestPermissions() async {
+    await location.requestPermission();
   }
 
   @override
@@ -36,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _sendLocationSms() async {
+  void _sendAlert() async {
     try {
       final locData = await location.getLocation();
       final user = FirebaseAuth.instance.currentUser;
@@ -51,22 +59,39 @@ class _HomeScreenState extends State<HomeScreen> {
         await _alertService.logAlert(newAlert);
       }
 
-      final String sms =
-          'sms:?body=I need help! My location is: https://www.google.com/maps/search/?api=1&query=${locData.latitude},${locData.longitude}';
-      final Uri uri = Uri.parse(sms);
+      final contacts = await _contactService.getContacts().first;
+      final recipients = contacts.map((c) => c.phone).toList();
+      final prefs = await SharedPreferences.getInstance();
+      final customMessage = prefs.getString('emergency_message') ?? 'I need help! My location is: [location]';
+      final locationLink = 'https://www.google.com/maps/search/?api=1&query=${locData.latitude},${locData.longitude}';
+      final message = customMessage.replaceAll('[location]', locationLink);
+
+      final Uri uri = Uri(
+        scheme: 'sms',
+        path: recipients.join(','),
+        queryParameters: <String, String>{
+          'body': message,
+        },
+      );
+
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
-      } else {
-        if (mounted) {
+         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not launch SMS app.')),
+            const SnackBar(content: Text('Opening messaging app...')),
+          );
+        }
+      } else {
+         if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Could not launch messaging app')),
           );
         }
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error sending SMS: $e')),
+          SnackBar(content: Text('Error sending alert: $e')),
         );
       }
     }
@@ -111,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 200,
               height: 200,
               child: ElevatedButton(
-                onPressed: _sendLocationSms,
+                onPressed: _sendAlert,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red[700],
                   foregroundColor: Colors.white,

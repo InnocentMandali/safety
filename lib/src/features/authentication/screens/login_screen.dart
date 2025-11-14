@@ -117,38 +117,38 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text('Login'),
                       ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: () async {
-                          final email = _emailController.text;
-                          final scaffoldMessenger = ScaffoldMessenger.of(context);
+                      // const SizedBox(height: 16),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     minimumSize: const Size(double.infinity, 50),
+                      //     // backgroundColor: Theme.of(context).colorScheme.secondary,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //     ),
+                      //   ),
+                      //   onPressed: () async {
+                      //     final email = _emailController.text;
+                      //     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-                          if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-                            scaffoldMessenger.showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter a valid email to receive a sign-in link.'),
-                              ),
-                            );
-                            return;
-                          }
+                      //     if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+                      //       scaffoldMessenger.showSnackBar(
+                      //         const SnackBar(
+                      //           content: Text('Please enter a valid email to receive a sign-in link.'),
+                      //         ),
+                      //       );
+                      //       return;
+                      //     }
 
-                          await _authService.sendSignInLinkToEmail(email);
+                      //     await _authService.sendSignInLinkToEmail(email);
 
-                          scaffoldMessenger.showSnackBar(
-                            const SnackBar(
-                              content: Text('Sign-in link sent to your email!'),
-                            ),
-                          );
-                        },
-                        child: const Text('Sign in with Email Link'),
-                      ),
+                      //     scaffoldMessenger.showSnackBar(
+                      //       const SnackBar(
+                      //         content: Text('Sign-in link sent to your email!'),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: const Text('Sign in with Email Link'),
+                      // ),
                       const SizedBox(height: 16),
                       TextButton(
                         onPressed: () => context.go('/signup'),

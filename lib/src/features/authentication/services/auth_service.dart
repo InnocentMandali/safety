@@ -40,10 +40,8 @@ class AuthService {
   // Send Sign In Link to Email
   Future<void> sendSignInLinkToEmail(String email) async {
     try {
-      // IMPORTANT: Replace YOUR_PROJECT_ID with your actual Firebase project ID.
-      const projectId = 'emergensync';
       final actionCodeSettings = ActionCodeSettings(
-        url: 'https://\${projectId}.firebaseapp.com/__/auth/action?mode=signIn&oobCode=<oobCode>',
+        url: 'https://emergensync.firebaseapp.com/__/auth/action?mode=signIn&oobCode=<oobCode>',
         handleCodeInApp: true,
         androidPackageName: 'com.example.emergen_sync',
         androidInstallApp: true,
