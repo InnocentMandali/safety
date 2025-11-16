@@ -26,16 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _requestPermissions();
     detector = ShakeDetector.autoStart(
       onPhoneShake: (shakeEvent) {
         _sendAlert();
       },
     );
-  }
-
-  void _requestPermissions() async {
-    await location.requestPermission();
   }
 
   @override
@@ -46,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _sendAlert() async {
     try {
+      await location.requestPermission();
       final locData = await location.getLocation();
       final user = FirebaseAuth.instance.currentUser;
 
