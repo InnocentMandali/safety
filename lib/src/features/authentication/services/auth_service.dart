@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Email & Password Sign Up
   Future<User?> signUp(String email, String password) async {
@@ -14,7 +16,7 @@ class AuthService {
       return result.user;
     } catch (e) {
       debugPrint(e.toString());
-      return null;
+      rethrow;
     }
   }
 
@@ -28,7 +30,21 @@ class AuthService {
       return result.user;
     } catch (e) {
       debugPrint(e.toString());
-      return null;
+      rethrow;
+    }
+  }
+
+  // Save User to Firestore
+  Future<void> saveUserToFirestore(String name, String email, String uid) async {
+    try {
+      await _firestore.collection('users').doc(uid).set({
+        'name': name,
+        'email': email,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
     }
   }
 
@@ -53,6 +69,7 @@ class AuthService {
       );
     } catch (e) {
       debugPrint(e.toString());
+      rethrow;
     }
   }
 

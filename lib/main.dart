@@ -2,15 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:emergen_sync/src/core/router/router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:emergen_sync/src/core/theme/theme.dart';
 import 'package:emergen_sync/src/shared/providers/theme_provider.dart';
 import 'package:emergen_sync/src/shared/providers/user_provider.dart';
 import 'package:emergen_sync/src/features/authentication/services/auth_service.dart';
-import 'package:emergen_sync/src/features/home/screens/home_screen.dart';
-import 'package:emergen_sync/src/features/authentication/screens/login_screen.dart';
+import 'package:emergen_sync/src/features/contacts/providers/emergency_contact_provider.dart';
+import 'package:emergen_sync/src/features/notifications/providers/notification_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:emergen_sync/src/features/home/widgets/home_content.dart';
+import 'package:emergen_sync/src/features/home/screens/map_screen.dart';
 import 'firebase_options.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,18 +26,40 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => EmergencyContactProvider()),
+        ChangeNotifierProvider(create: (context) => NotificationProvider(navigatorKey: navigatorKey)..initialize()),
         StreamProvider<User?>.value(
           value: AuthService().user,
           initialData: null,
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  late final GoRouter _router = GoRouter(
+    navigatorKey: navigatorKey,
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const HomeContent(),
+        routes: [
+          GoRoute(
+            path: 'map',
+            builder: (context, state) {
+              final lat = double.parse(state.uri.queryParameters['lat']!);
+              final long = double.parse(state.uri.queryParameters['long']!);
+              return MapScreen(latitude: lat, longitude: long);
+            },
+          ),
+        ],
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +70,9 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          routerConfig: router,
+          routerConfig: _router,
         );
       },
     );
   }
 }
-
-class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<User?>(context);
-    if (user == null) {
-      return const LoginScreen();
-    } else {
-      return const HomeScreen();
-    }
-  }
-}
-

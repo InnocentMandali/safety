@@ -27,6 +27,11 @@ dependencies:
   flutter_contacts: ^1.1.9+2
   flutter_settings_ui: ^3.0.1
   shared_preferences: ^2.5.3
+  flutter_svg: ^2.2.2
+  firebase_messaging: ^16.0.4
+  cloud_functions: ^6.0.4
+  geolocator: ^14.0.2
+  google_maps_flutter: ^2.14.0
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +39,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
