@@ -1,42 +1,35 @@
-# EmergenSync Blueprint
+
+# Task Manager App Blueprint
 
 ## Overview
 
-EmergenSync is a personal safety application designed to provide users with a reliable and efficient way to alert their emergency contacts in critical situations. The application will leverage the power of Flutter and Firebase to deliver a seamless and cross-platform experience.
+This document outlines the plan for creating a task manager application. The app will allow users to create, view, and manage their tasks.
 
-## Phase 1: Initial Setup and Authentication
+## Features
 
-### Implemented Features:
-
-*   **Project Setup:** Initialized a new Flutter project with a clean architecture.
-*   **Firebase Integration:** Integrated Firebase for authentication and database services.
-*   **Authentication Flow:** Implemented email and password authentication for both login and signup.
-*   **Routing:** Set up a declarative routing system using `go_router` to handle navigation.
-*   **Theme:** Created a modern and visually appealing theme with light and dark modes.
-*   **Welcome Screen:** Designed a welcoming and informative screen for new users.
-*   **Login Screen:** Created a user-friendly login screen with form validation and error handling.
-*   **Signup Screen:** Developed a comprehensive signup screen with form validation, a terms and conditions agreement, and user data storage in Firestore.
-
-### Key Achievements:
-
-*   A solid foundation for the application with a clean and scalable architecture.
-*   A secure and reliable authentication system.
+*   Add new tasks with a title and description.
+*   View a list of all tasks.
+*   Mark tasks as complete.
+*   Delete tasks.
 *   A modern and visually appealing user interface.
+*   Light and dark theme support.
 
-## Phase 2: Core Features
+## Project Structure
 
-### Planned Features:
+*   `lib/main.dart`: The main entry point of the application.
+*   `lib/providers/task_provider.dart`: State management for tasks.
+*   `lib/models/task.dart`: The data model for a task.
+*   `lib/screens/task_screen.dart`: The main screen that displays the list of tasks.
+*   `lib/widgets/add_task_dialog.dart`: A dialog for adding new tasks.
+*   `lib/theme/theme.dart`: The application's theme.
 
-*   **Home Screen:** Design and implement a home screen that provides quick access to the app's core features.
-*   **Emergency Contacts:** Allow users to add, edit, and delete emergency contacts.
-*   **SOS Feature:** Implement an SOS feature that sends an alert to emergency contacts with the user's location.
-*   **Settings Screen:** Create a settings screen where users can manage their profile, emergency contacts, and app preferences.
+## Current Plan
 
-## Phase 3: Advanced Features
-
-### Planned Features:
-
-*   **Admin Dashboard:** Create a dashboard for administrators to manage users and view app analytics.
-*   **Shake to Alert:** Implement a feature that allows users to trigger an SOS alert by shaking their device.
-*   **Location Tracking:** Add real-time location tracking for active SOS alerts.
-*   **Push Notifications:** Implement push notifications to alert emergency contacts even when the app is in the background.
+1.  **Create `blueprint.md` file:** Document the project's purpose, features, and design.
+2.  **Add dependencies:** Add `provider` and `google_fonts` to `pubspec.yaml`.
+3.  **Create the main app structure:** Set up `main.dart` with a `ThemeProvider` and a basic `MaterialApp`.
+4.  **Create `Task` model:** Define the `Task` class.
+5.  **Create `TaskProvider`:** Implement the state management for tasks.
+6.  **Create the UI:** Build the `TaskScreen` and `AddTaskDialog`.
+7.  **Implement UI logic:** Connect the UI to the `TaskProvider`.
+8.  **Apply styling:** Implement a modern theme.
