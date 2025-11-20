@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:emergen_sync/src/features/emergency_contacts/providers/emergency_contact_provider.dart';
-import 'package:emergen_sync/src/routing/app_router.dart';
+import 'providers/task_provider.dart';
+import 'src/features/emergency_contacts/providers/emergency_contact_provider.dart';
+import 'src/routing/app_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EmergencyContactProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => EmergencyContactProvider()),
+        ChangeNotifierProvider(create: (context) => TaskProvider()),
+      ],
       child: MaterialApp.router(
         routerConfig: router,
         title: 'EmergenSync',
