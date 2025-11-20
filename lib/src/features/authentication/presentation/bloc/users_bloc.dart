@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -19,7 +20,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
       try {
         _usersSubscription?.cancel();
         _usersSubscription = _userRepository.getUsers().listen((users) {
-          add(_UsersUpdated(users));
+          add(UsersEvent.usersUpdated(users));
         });
       } catch (e) {
         emit(UsersState.error(e.toString()));
@@ -36,10 +37,4 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     _usersSubscription?.cancel();
     return super.close();
   }
-}
-
-@freezed
-class UsersEvent with _$UsersEvent {
-  const factory UsersEvent.loadUsers() = _LoadUsers;
-  const factory UsersEvent.usersUpdated(List<UserModel> users) = _UsersUpdated;
 }

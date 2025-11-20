@@ -8,11 +8,10 @@ class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
-  _MapScreenState createState() => _MapScreenState();
+  MapScreenState createState() => MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  late GoogleMapController _mapController;
+class MapScreenState extends State<MapScreen> {
   final Map<String, Marker> _markers = {};
 
   @override
@@ -52,9 +51,6 @@ class _MapScreenState extends State<MapScreen> {
               target: LatLng(37.7749, -122.4194), // San Francisco
               zoom: 12,
             ),
-            onMapCreated: (controller) {
-              _mapController = controller;
-            },
             markers: _markers.values.toSet(),
           ),
         ),

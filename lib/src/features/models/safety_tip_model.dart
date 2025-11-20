@@ -4,7 +4,7 @@ part 'safety_tip_model.freezed.dart';
 part 'safety_tip_model.g.dart';
 
 @freezed
-class SafetyTipModel with _$SafetyTipModel {
+abstract class SafetyTipModel with _$SafetyTipModel {
   const factory SafetyTipModel({
     required String title,
     required String description,

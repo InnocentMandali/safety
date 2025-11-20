@@ -1,5 +1,5 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,275 +9,194 @@ part of 'safety_tip_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
-// dart format off
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+
+SafetyTipModel _$SafetyTipModelFromJson(Map<String, dynamic> json) {
+  return _SafetyTipModel.fromJson(json);
+}
 
 /// @nodoc
 mixin _$SafetyTipModel {
-
- String get title; String get description; String get image;
-/// Create a copy of SafetyTipModel
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$SafetyTipModelCopyWith<SafetyTipModel> get copyWith => _$SafetyTipModelCopyWithImpl<SafetyTipModel>(this as SafetyTipModel, _$identity);
+  String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
 
   /// Serializes this SafetyTipModel to a JSON map.
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SafetyTipModel&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.image, image) || other.image == image));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,title,description,image);
-
-@override
-String toString() {
-  return 'SafetyTipModel(title: $title, description: $description, image: $image)';
-}
-
-
+  /// Create a copy of SafetyTipModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SafetyTipModelCopyWith<SafetyTipModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $SafetyTipModelCopyWith<$Res>  {
-  factory $SafetyTipModelCopyWith(SafetyTipModel value, $Res Function(SafetyTipModel) _then) = _$SafetyTipModelCopyWithImpl;
-@useResult
-$Res call({
- String title, String description, String image
-});
-
-
-
-
+abstract class $SafetyTipModelCopyWith<$Res> {
+  factory $SafetyTipModelCopyWith(
+          SafetyTipModel value, $Res Function(SafetyTipModel) then) =
+      _$SafetyTipModelCopyWithImpl<$Res, SafetyTipModel>;
+  @useResult
+  $Res call({String title, String description, String image});
 }
+
 /// @nodoc
-class _$SafetyTipModelCopyWithImpl<$Res>
+class _$SafetyTipModelCopyWithImpl<$Res, $Val extends SafetyTipModel>
     implements $SafetyTipModelCopyWith<$Res> {
-  _$SafetyTipModelCopyWithImpl(this._self, this._then);
+  _$SafetyTipModelCopyWithImpl(this._value, this._then);
 
-  final SafetyTipModel _self;
-  final $Res Function(SafetyTipModel) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
-/// Create a copy of SafetyTipModel
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? image = null,}) {
-  return _then(_self.copyWith(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
+  /// Create a copy of SafetyTipModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = null,
+    Object? description = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
 }
 
+/// @nodoc
+abstract class _$$SafetyTipModelImplCopyWith<$Res>
+    implements $SafetyTipModelCopyWith<$Res> {
+  factory _$$SafetyTipModelImplCopyWith(_$SafetyTipModelImpl value,
+          $Res Function(_$SafetyTipModelImpl) then) =
+      __$$SafetyTipModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String title, String description, String image});
 }
 
+/// @nodoc
+class __$$SafetyTipModelImplCopyWithImpl<$Res>
+    extends _$SafetyTipModelCopyWithImpl<$Res, _$SafetyTipModelImpl>
+    implements _$$SafetyTipModelImplCopyWith<$Res> {
+  __$$SafetyTipModelImplCopyWithImpl(
+      _$SafetyTipModelImpl _value, $Res Function(_$SafetyTipModelImpl) _then)
+      : super(_value, _then);
 
-/// Adds pattern-matching-related methods to [SafetyTipModel].
-extension SafetyTipModelPatterns on SafetyTipModel {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SafetyTipModel value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _SafetyTipModel() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SafetyTipModel value)  $default,){
-final _that = this;
-switch (_that) {
-case _SafetyTipModel():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SafetyTipModel value)?  $default,){
-final _that = this;
-switch (_that) {
-case _SafetyTipModel() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description,  String image)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _SafetyTipModel() when $default != null:
-return $default(_that.title,_that.description,_that.image);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description,  String image)  $default,) {final _that = this;
-switch (_that) {
-case _SafetyTipModel():
-return $default(_that.title,_that.description,_that.image);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description,  String image)?  $default,) {final _that = this;
-switch (_that) {
-case _SafetyTipModel() when $default != null:
-return $default(_that.title,_that.description,_that.image);case _:
-  return null;
-
-}
-}
-
+  /// Create a copy of SafetyTipModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = null,
+    Object? description = null,
+    Object? image = null,
+  }) {
+    return _then(_$SafetyTipModelImpl(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
+class _$SafetyTipModelImpl implements _SafetyTipModel {
+  const _$SafetyTipModelImpl(
+      {required this.title, required this.description, required this.image});
 
-class _SafetyTipModel implements SafetyTipModel {
-  const _SafetyTipModel({required this.title, required this.description, required this.image});
-  factory _SafetyTipModel.fromJson(Map<String, dynamic> json) => _$SafetyTipModelFromJson(json);
+  factory _$SafetyTipModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SafetyTipModelImplFromJson(json);
 
-@override final  String title;
-@override final  String description;
-@override final  String image;
+  @override
+  final String title;
+  @override
+  final String description;
+  @override
+  final String image;
 
-/// Create a copy of SafetyTipModel
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$SafetyTipModelCopyWith<_SafetyTipModel> get copyWith => __$SafetyTipModelCopyWithImpl<_SafetyTipModel>(this, _$identity);
+  @override
+  String toString() {
+    return 'SafetyTipModel(title: $title, description: $description, image: $image)';
+  }
 
-@override
-Map<String, dynamic> toJson() {
-  return _$SafetyTipModelToJson(this, );
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SafetyTipModelImpl &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, title, description, image);
+
+  /// Create a copy of SafetyTipModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SafetyTipModelImplCopyWith<_$SafetyTipModelImpl> get copyWith =>
+      __$$SafetyTipModelImplCopyWithImpl<_$SafetyTipModelImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SafetyTipModelImplToJson(
+      this,
+    );
+  }
 }
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SafetyTipModel&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.image, image) || other.image == image));
+abstract class _SafetyTipModel implements SafetyTipModel {
+  const factory _SafetyTipModel(
+      {required final String title,
+      required final String description,
+      required final String image}) = _$SafetyTipModelImpl;
+
+  factory _SafetyTipModel.fromJson(Map<String, dynamic> json) =
+      _$SafetyTipModelImpl.fromJson;
+
+  @override
+  String get title;
+  @override
+  String get description;
+  @override
+  String get image;
+
+  /// Create a copy of SafetyTipModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SafetyTipModelImplCopyWith<_$SafetyTipModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,title,description,image);
-
-@override
-String toString() {
-  return 'SafetyTipModel(title: $title, description: $description, image: $image)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$SafetyTipModelCopyWith<$Res> implements $SafetyTipModelCopyWith<$Res> {
-  factory _$SafetyTipModelCopyWith(_SafetyTipModel value, $Res Function(_SafetyTipModel) _then) = __$SafetyTipModelCopyWithImpl;
-@override @useResult
-$Res call({
- String title, String description, String image
-});
-
-
-
-
-}
-/// @nodoc
-class __$SafetyTipModelCopyWithImpl<$Res>
-    implements _$SafetyTipModelCopyWith<$Res> {
-  __$SafetyTipModelCopyWithImpl(this._self, this._then);
-
-  final _SafetyTipModel _self;
-  final $Res Function(_SafetyTipModel) _then;
-
-/// Create a copy of SafetyTipModel
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? image = null,}) {
-  return _then(_SafetyTipModel(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
-}
-
-// dart format on

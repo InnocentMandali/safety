@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/task_provider.dart';
-import 'screens/task_screen.dart';
-import 'theme/theme.dart';
+import 'package:emergen_sync/src/features/emergency_contacts/providers/emergency_contact_provider.dart';
+import 'package:emergen_sync/src/routing/app_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,13 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
-      child: MaterialApp(
-        title: 'Task Manager',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        home: const TaskScreen(),
+      create: (context) => EmergencyContactProvider(),
+      child: MaterialApp.router(
+        routerConfig: router,
+        title: 'EmergenSync',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
       ),
     );
   }

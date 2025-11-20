@@ -1,8 +1,9 @@
+
 import 'package:go_router/go_router.dart';
 import 'package:emergen_sync/src/features/home/screens/welcome_screen.dart';
-import 'package:emergen_sync/src/features/authentication/screens/login_screen.dart';
+import 'package:emergen_sync/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:emergen_sync/src/features/authentication/screens/signup_screen.dart';
-import 'package:emergen_sync/src/features/home/screens/home_screen.dart';
+import 'package:emergen_sync/src/features/home/home_screen.dart';
 import 'package:emergen_sync/src/features/contacts/screens/contacts_screen.dart';
 import 'package:emergen_sync/src/features/settings/screens/settings_screen.dart';
 import 'package:emergen_sync/src/features/sos/screens/sos_location_screen.dart';

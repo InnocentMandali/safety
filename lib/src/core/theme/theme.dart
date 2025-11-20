@@ -44,12 +44,12 @@ class AppTheme {
 
   static TextTheme _textTheme(Color onSurfaceColor) {
     return GoogleFonts.latoTextTheme(
-      TextTheme(
-        displayLarge: const TextStyle(fontSize: 57, fontWeight: FontWeight.bold),
-        titleLarge: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-        bodyLarge: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-        bodyMedium: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-        labelLarge: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      const TextTheme(
+        displayLarge: TextStyle(fontSize: 57, fontWeight: FontWeight.bold),
+        titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+        bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+        bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+        labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
       ).apply(bodyColor: onSurfaceColor, displayColor: onSurfaceColor),
     );
   }
