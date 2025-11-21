@@ -1,12 +1,14 @@
 
+import 'package:emergen_sync/src/features/emergency_contacts/screens/emergency_contacts_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:emergen_sync/src/features/home/screens/welcome_screen.dart';
 import 'package:emergen_sync/src/features/authentication/presentation/screens/login_screen.dart';
 import 'package:emergen_sync/src/features/authentication/screens/signup_screen.dart';
-import 'package:emergen_sync/src/features/home/home_screen.dart';
+import 'package:emergen_sync/src/features/home/screens/home_screen.dart'; // Corrected path
 import 'package:emergen_sync/src/features/contacts/screens/contacts_screen.dart';
 import 'package:emergen_sync/src/features/settings/screens/settings_screen.dart';
 import 'package:emergen_sync/src/features/sos/screens/sos_location_screen.dart';
+import 'package:emergen_sync/src/features/tasks/screens/tasks_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -37,6 +39,14 @@ class AppRouter {
       GoRoute(
         path: '/contacts',
         builder: (context, state) => const ContactsScreen(),
+      ),
+      GoRoute(
+        path: '/emergency_contacts',
+        builder: (context, state) => const EmergencyContactsScreen(),
+      ),
+        GoRoute(
+        path: '/tasks',
+        builder: (context, state) => const TasksScreen(),
       ),
       GoRoute(
         path: '/settings',
