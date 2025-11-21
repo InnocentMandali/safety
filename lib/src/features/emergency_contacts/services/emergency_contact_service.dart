@@ -1,7 +1,6 @@
 
 import 'package:emergen_sync/src/features/emergency_contacts/models/emergency_contact.dart';
 import 'package:emergen_sync/src/services/database_service.dart';
-import 'package:sqflite/sqflite.dart';
 
 class EmergencyContactService {
   final dbService = DatabaseService.instance;

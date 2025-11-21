@@ -8,11 +8,11 @@ class AddEmergencyContactScreen extends StatefulWidget {
   const AddEmergencyContactScreen({super.key});
 
   @override
-  _AddEmergencyContactScreenState createState() =>
-      _AddEmergencyContactScreenState();
+  AddEmergencyContactScreenState createState() =>
+      AddEmergencyContactScreenState();
 }
 
-class _AddEmergencyContactScreenState extends State<AddEmergencyContactScreen> {
+class AddEmergencyContactScreenState extends State<AddEmergencyContactScreen> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _phoneNumber = '';

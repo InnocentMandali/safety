@@ -1,19 +1,29 @@
 
 import 'package:emergen_sync/src/features/authentication/data/auth_repository.dart';
 import 'package:emergen_sync/src/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:emergen_sync/src/features/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('EmergenSync Dashboard'),
         actions: [
+          IconButton(
+            icon: Icon(themeProvider.themeMode == ThemeMode.dark
+                ? Icons.light_mode
+                : Icons.dark_mode),
+            onPressed: () => themeProvider.toggleTheme(),
+            tooltip: 'Toggle Theme',
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
@@ -46,10 +56,18 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildFeatureCard(
                     context,
+                    icon: Icons.sos,
+                    title: 'SOS',
+                    subtitle: 'Send an emergency alert',
+                    onTap: () => context.go('/sos'),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildFeatureCard(
+                    context,
                     icon: Icons.contact_emergency_outlined,
                     title: 'Emergency Contacts',
                     subtitle: 'Manage your trusted contacts',
-                    onTap: () => context.go('/emergency_contacts'),
+                    onTap: () => context.go('/emergency-contacts'),
                   ),
                   const SizedBox(height: 16),
                   _buildFeatureCard(
@@ -73,12 +91,22 @@ class HomeScreen extends StatelessWidget {
               );
             },
             unauthenticated: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.go('/');
+              });
               return const Center(
                 child: Text('Not authenticated. Please login.'),
               );
             },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (message) => Center(child: Text(message)),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.go('/sos'),
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.sos, color: Colors.white),
       ),
     );
   }

@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:emergen_sync/src/features/authentication/data/auth_exceptions.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -23,27 +24,36 @@ class AuthRepository {
     return null;
   }
 
-  Future<void> signUpWithEmailAndPassword(String email, String password, String name) async {
+  Future<void> signUp({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final User? user = userCredential.user;
-      if (user != null) {
-        await _firebaseFirestore.collection('users').doc(user.uid).set({
-          'name': name,
-          'email': email,
-          'role': 'user',
-        });
-      }
     } on FirebaseAuthException catch (e) {
-      // handle error
+      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw const SignUpWithEmailAndPasswordFailure();
     }
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) {
-    return _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw const LogInWithEmailAndPasswordFailure();
+    }
   }
 
   Future<void> signOut() {

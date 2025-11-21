@@ -17,7 +17,7 @@ dependencies:
   go_router: ^14.1.2
   provider: ^6.1.2
   sqflite: ^2.3.3+1
-  permission_handler: ^11.3.1
+  permission_handler: ^12.0.1
   location: ^7.0.0
   audioplayers: ^6.0.0
   torch_light: ^1.0.0
@@ -27,11 +27,14 @@ dependencies:
   firebase_auth: ^4.20.0
   firebase_storage: ^11.6.5 # Corrected version
   firebase_messaging: ^14.9.4
+  bloc: ^8.1.4 # Explicitly add bloc
   flutter_bloc: ^8.1.6
   google_maps_flutter: ^2.7.0
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
   path: ^1.9.0
+  flutter_contacts: ^1.1.9+2
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

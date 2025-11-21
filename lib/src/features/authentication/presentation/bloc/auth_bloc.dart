@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:emergen_sync/src/features/authentication/data/auth_repository.dart';
+import 'package:emergen_sync/src/features/authentication/data/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -18,6 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         super(const AuthState.unknown()) {
     on<_AuthStatusChanged>(_onAuthStatusChanged);
     on<AuthLogoutRequested>(_onLogoutRequested);
+    on<AuthLoginRequested>(_onLoginRequested);
+    on<AuthSignUpRequested>(_onSignUpRequested);
 
     _userSubscription = _authRepository.authStateChanges.listen(
       (user) => add(AuthEvent.authStatusChanged(user)),
@@ -32,7 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthState.unauthenticated());
     } else {
       final role = await _authRepository.getRole();
-      emit(AuthState.authenticated(user: event.user!, role: role));
+      if (role != null) {
+        emit(AuthState.authenticated(user: event.user!, role: role));
+      } else {
+        emit(const AuthState.unauthenticated());
+      }
     }
   }
 
@@ -41,6 +48,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) {
     _authRepository.signOut();
+  }
+
+  Future<void> _onLoginRequested(
+    AuthLoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
+    try {
+      await _authRepository.signInWithEmailAndPassword(
+        email: event.email,
+        password: event.password,
+      );
+    } on LogInWithEmailAndPasswordFailure catch (e) {
+      emit(AuthState.error(e.message));
+    }
+  }
+
+  Future<void> _onSignUpRequested(
+    AuthSignUpRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthState.loading());
+    try {
+      await _authRepository.signUp(
+        email: event.email,
+        password: event.password,
+      );
+    } on SignUpWithEmailAndPasswordFailure catch (e) {
+      emit(AuthState.error(e.message));
+    }
   }
 
   @override
