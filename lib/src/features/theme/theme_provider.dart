@@ -15,4 +15,21 @@ class ThemeProvider with ChangeNotifier {
     _themeMode = ThemeMode.system;
     notifyListeners();
   }
+
+  ThemeData get lightTheme => ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        // Add other light theme properties here
+      );
+
+  ThemeData get darkTheme => ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        // Add other dark theme properties here
+      );
 }

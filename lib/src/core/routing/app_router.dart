@@ -1,78 +1,84 @@
 
-import 'package:emergen_sync/src/core/routing/scaffold_with_nav_bar.dart';
-import 'package:emergen_sync/src/features/emergency_contacts/screens/emergency_contacts_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:emergen_sync/src/features/home/screens/welcome_screen.dart';
-import 'package:emergen_sync/src/features/authentication/presentation/screens/login_screen.dart';
-import 'package:emergen_sync/src/features/authentication/screens/signup_screen.dart';
-import 'package:emergen_sync/src/features/home/screens/home_screen.dart';
-import 'package:emergen_sync/src/features/contacts/screens/contacts_screen.dart';
-import 'package:emergen_sync/src/features/settings/screens/settings_screen.dart';
-import 'package:emergen_sync/src/features/sos/screens/sos_location_screen.dart';
-import 'package:emergen_sync/src/features/tasks/screens/tasks_screen.dart';
+
+import '../../features/authentication/presentation/screens/login_screen.dart';
+import '../../features/authentication/presentation/screens/signup_screen.dart';
+import '../../features/emergency_contacts/screens/add_emergency_contact_screen.dart';
+import '../../features/emergency_contacts/screens/emergency_contacts_screen.dart';
+import '../../features/home/screens/home_screen.dart';
+import '../../features/sos/screens/sos_screen.dart';
+import '../../features/tasks/screens/tasks_screen.dart';
+import '../presentation/widgets/scaffold_with_nav_bar.dart';
 
 class AppRouter {
-  // private navigator key
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
     navigatorKey: _rootNavigatorKey,
+    initialLocation: '/',
     routes: [
-      // Routes that should NOT have the bottom navigation bar
       GoRoute(
         path: '/',
-        builder: (context, state) => const WelcomeScreen(),
-      ),
-      GoRoute(
-        path: '/login',
         builder: (context, state) => const LoginScreen(),
-      ),
-      GoRoute(
-        path: '/signup',
-        builder: (context, state) => const SignupScreen(),
-      ),
-       GoRoute(
-        path: '/sos_location/:latitude/:longitude',
-        builder: (context, state) {
-          final latitude = double.parse(state.pathParameters['latitude']!);
-          final longitude = double.parse(state.pathParameters['longitude']!);
-          return SosLocationScreen(
-            latitude: latitude,
-            longitude: longitude,
-          );
-        },
-      ),
-
-      // Main application shell with bottom navigation bar
-      ShellRoute(
-        builder: (context, state, child) {
-          return ScaffoldWithNavBar(child: child);
-        },
         routes: [
           GoRoute(
-            path: '/home',
-            builder: (context, state) => const HomeScreen(),
+            path: 'signup',
+            builder: (context, state) => const SignupScreen(),
           ),
-          GoRoute(
-            path: '/contacts',
-            builder: (context, state) => const ContactsScreen(),
+        ],
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
+        },
+        branches: [
+          // Home branch
+          StatefulShellBranch(
             routes: [
-              // Sub-route for emergency contacts
               GoRoute(
-                path: 'emergency_contacts',
-                builder: (context, state) => const EmergencyContactsScreen(),
+                path: '/home',
+                builder: (context, state) => const HomeScreen(),
               ),
             ],
           ),
-          GoRoute(
-            path: '/tasks',
-            builder: (context, state) => const TasksScreen(),
+
+          // SOS branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/sos',
+                builder: (context, state) => const SOSTriggerScreen(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/settings',
-            builder: (context, state) => const SettingsScreen(),
+
+          // Emergency Contacts branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/emergency-contacts',
+                builder: (context, state) => const EmergencyContactsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'add',
+                    builder: (context, state) =>
+                        const AddEmergencyContactScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          // Tasks branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/tasks',
+                builder: (context, state) => const TasksScreen(),
+              ),
+            ],
           ),
         ],
       ),

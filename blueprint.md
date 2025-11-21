@@ -23,32 +23,32 @@ This section outlines the implemented design principles and functional features 
 
 ### Core Features
 
-*   **Authentication:** Secure user authentication is handled via Firebase, managed by an `AuthRepository` and a BLoC pattern (`AuthBloc`).
+*   **Authentication:** Secure user authentication is handled via Firebase, managed by an `AuthRepository` and a BLoC pattern (`AuthBloc`). The login and signup screens are fully implemented with error handling and loading states.
 *   **Role-Based Access Control:** The UI dynamically adapts to the user's role (e.g., a regular user vs. an 'admin'), displaying certain features like the "Admin Dashboard" conditionally.
 *   **Emergency Contacts:** Users can add, view, and manage a list of trusted emergency contacts. This feature is integrated with a local `sqflite` database for offline availability.
 *   **Safety Tasks & Drills:** A dedicated section for users to engage with and complete safety-related tasks and drills.
 *   **SOS Messaging:** Users can send a pre-defined SOS message, including their current GPS location, to all registered emergency contacts with a single tap.
 *   **Central Dashboard:** The main `HomeScreen` acts as a central hub, offering clear navigation to all primary features of the application, including a prominent floating action button for the SOS feature.
 
-## Current Task: Implement SOS Messaging Feature
+## Current Task: Fix Authentication Flow
 
-This task focused on building the end-to-end SOS messaging functionality.
+This task focused on fixing the authentication flow, including the login and signup screens.
 
 ### Plan and Steps Completed
 
-1.  **Dependency Management:** Added the `flutter_sms`, `permission_handler`, and `location` packages to `pubspec.yaml`.
-2.  **SOS Screen Creation:**
-    *   Developed the `SOSTriggerScreen` (`lib/src/features/sos/screens/sos_screen.dart`) which serves as the confirmation and activation page for the SOS alert.
-    *   The UI includes a large, clear button to send the alert, and provides visual feedback (`CircularProgressIndicator`) during the sending process.
-3.  **Permission Handling:** Implemented logic to request `Permission.sms` and `Permission.location` from the user before attempting to send the message. The flow handles cases where permissions are denied.
-4.  **Location Fetching:** Integrated the `location` package to get the user's current latitude and longitude.
-5.  **SMS Construction and Sending:**
-    *   The SOS message is dynamically constructed to include a Google Maps link with the user's coordinates.
-    *   It retrieves the list of recipients from the `EmergencyContactProvider`.
-    *   The `flutter_sms` package is used to send the message directly.
-6.  **Navigation and UI Integration:**
-    *   Added a new route (`/sos`) in `app_router.dart` pointing to the `SOSTriggerScreen`.
-    *   Added a `FloatingActionButton` on the `HomeScreen` for quick and prominent access to the SOS feature.
-    *   Included a card in the main dashboard list for SOS as a secondary entry point.
-7.  **User Feedback:** Implemented `SnackBar` notifications to inform the user about the status of the SOS message (sent successfully, failed, or permissions denied).
-
+1.  **Dependency Management:** Added the `firebase_auth` package to `pubspec.yaml`.
+2.  **AuthRepository Correction:** Implemented the `signUpWithEmailAndPassword` method in the `AuthRepository`.
+3.  **Signup Screen Correction:**
+    *   Replaced direct calls to the data layer with BLoC event dispatches.
+    *   Added error handling to display messages to the user on failed signup attempts.
+    *   Added a loading indicator to provide visual feedback during the signup process.
+4.  **Login Screen Correction:**
+    *   Replaced direct calls to the data layer with BLoC event dispatches.
+    *   Added error handling to display messages to the user on failed login attempts.
+    *   Added a loading indicator to provide visual feedback during the login process.
+5.  **BLoC Updates:**
+    *   Updated `AuthState` to better handle authentication states (initial, loading, authenticated, unauthenticated).
+    *   Updated `AuthBloc` to handle the new `signUpWithEmailAndPassword` method and the updated `AuthState` definitions.
+    *   Updated `AuthEvent` to include the `signUpRequested` event.
+6.  **Code Generation:** Ran `build_runner` to generate the necessary `freezed` files.
+7.  **File Cleanup:** Deleted unused `user_bloc` files (`user_bloc.dart`, `users_bloc.freezed.dart`, `users_event.dart`, `users_state.dart`).

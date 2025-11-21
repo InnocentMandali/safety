@@ -1,13 +1,13 @@
-part of 'auth_bloc.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'auth_state.freezed.dart';
 
 @freezed
-class AuthState with _$AuthState {
-  const factory AuthState.unknown() = _Unknown;
-  const factory AuthState.authenticated({
-    required User user,
-    required String role,
-  }) = Authenticated;
-  const factory AuthState.unauthenticated() = Unauthenticated;
-  const factory AuthState.loading() = AuthLoading;
-  const factory AuthState.error(String message) = AuthError;
+abstract class AuthState with _$AuthState {
+  const factory AuthState.initial() = _Initial;
+  const factory AuthState.loading() = _Loading;
+  const factory AuthState.authenticated({required User user}) = _Authenticated;
+  const factory AuthState.unauthenticated({String? error}) = _Unauthenticated;
 }

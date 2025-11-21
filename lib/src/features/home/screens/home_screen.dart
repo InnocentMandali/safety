@@ -1,11 +1,13 @@
 
-import 'package:emergen_sync/src/features/authentication/data/auth_repository.dart';
-import 'package:emergen_sync/src/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:emergen_sync/src/features/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
+import '../../authentication/presentation/bloc/auth_bloc.dart';
+import '../../authentication/presentation/bloc/auth_event.dart';
+import '../../authentication/presentation/bloc/auth_state.dart';
+import '../../theme/theme_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,17 +29,29 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              context.read<AuthRepository>().signOut();
+              context.read<AuthBloc>().add(const AuthEvent.signOutRequested());
             },
             tooltip: 'Logout',
           ),
         ],
       ),
-      body: BlocBuilder<AuthBloc, AuthState>(
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          state.whenOrNull(
+            unauthenticated: (error) {
+              // Check if the current route is not the login or signup page
+              final currentRoute = GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+              if (currentRoute != '/' && currentRoute != '/signup') {
+                context.go('/');
+              }
+            },
+          );
+        },
         builder: (context, state) {
           return state.when(
-            unknown: () => const Center(child: CircularProgressIndicator()),
-            authenticated: (user, role) {
+            initial: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            authenticated: (user) {
               return ListView(
                 padding: const EdgeInsets.all(16.0),
                 children: [
@@ -77,29 +91,14 @@ class HomeScreen extends StatelessWidget {
                     subtitle: 'Complete safety tasks and drills',
                     onTap: () => context.go('/tasks'),
                   ),
-                  if (role == 'admin') ...[
-                    const SizedBox(height: 16),
-                    _buildFeatureCard(
-                      context,
-                      icon: Icons.admin_panel_settings_outlined,
-                      title: 'Admin Dashboard',
-                      subtitle: 'Access administrative features',
-                      onTap: () => context.go('/admin_dashboard'),
-                    ),
-                  ],
                 ],
               );
             },
-            unauthenticated: () {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.go('/');
-              });
+            unauthenticated: (error) {
               return const Center(
                 child: Text('Not authenticated. Please login.'),
               );
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (message) => Center(child: Text(message)),
           );
         },
       ),

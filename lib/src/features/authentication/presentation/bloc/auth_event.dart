@@ -1,15 +1,14 @@
-part of 'auth_bloc.dart';
+
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'auth_event.freezed.dart';
 
 @freezed
-class AuthEvent with _$AuthEvent {
-  const factory AuthEvent.authStatusChanged(User? user) = _AuthStatusChanged;
-  const factory AuthEvent.logoutRequested() = AuthLogoutRequested;
-  const factory AuthEvent.loginRequested({
-    required String email,
-    required String password,
-  }) = AuthLoginRequested;
-  const factory AuthEvent.signUpRequested({
-    required String email,
-    required String password,
-  }) = AuthSignUpRequested;
+abstract class AuthEvent with _$AuthEvent {
+  const factory AuthEvent.appStarted() = _AppStarted;
+  const factory AuthEvent.signInRequested(String email, String password) =
+      _SignInRequested;
+  const factory AuthEvent.signUpRequested(
+      String email, String password, String name) = _SignUpRequested;
+  const factory AuthEvent.signOutRequested() = _SignOutRequested;
 }

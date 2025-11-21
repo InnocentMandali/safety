@@ -1,9 +1,11 @@
 
-import 'package:emergen_sync/src/features/authentication/data/auth_repository.dart';
-import 'package:emergen_sync/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,90 +29,98 @@ class LoginScreenState extends State<LoginScreen> {
         ),
         title: const Text('Login'),
       ),
-      body: BlocListener<AuthBloc, AuthState>(
+      body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           state.when(
-            unknown: () {},
-            authenticated: (user, role) {
-              if (role == 'admin') {
-                context.go('/admin_dashboard');
-              } else {
-                context.go('/home');
+            unauthenticated: (error) {
+              if (error != null) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text(error)));
               }
             },
-            unauthenticated: () {},
+            loading: () {},
+            authenticated: (user) => context.go('/home'),
+            initial: () {},
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Welcome Back!',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 32),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome Back!',
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
+                  const SizedBox(height: 32),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.email),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
                   ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context.read<AuthRepository>().signInWithEmailAndPassword(
-                            _emailController.text,
-                            _passwordController.text,
-                          );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
                   ),
-                  child: const Text('Login'),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () => context.go('/signup'),
-                  child: const Text('Don\'t have an account? Sign up'),
-                ),
-              ],
+                  const SizedBox(height: 32),
+                  state.maybeWhen(
+                    loading: () => const CircularProgressIndicator(),
+                    orElse: () => ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                                AuthEvent.signInRequested(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                ),
+                              );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
+                      child: const Text('Login'),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () => context.go('/signup'),
+                    child: const Text('Don\'t have an account? Sign up'),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
